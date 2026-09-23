@@ -11,6 +11,22 @@ body > .container-fluid {
     width: 100%;
 }
 
+#board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 360px));
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+#board .card {
+  width: 100%;
+}
+
+#board .card img {
+  width: 100%;
+  height: clamp(260px, 28vw, 360px);
+}
 
 
 nav .form-select {
