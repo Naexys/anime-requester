@@ -1,5 +1,5 @@
 Branch structure should be 
 
-- main --> stable
-- dev --> production
+- main --> production
+- dev --> stable
 - dev-[feat / fix]-[feature name] --> features
