@@ -1,55 +1,66 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AnimeRequester</title>
-    <link rel="stylesheet" href="../CSS/style.css">
-    <script defer src="../JS/script.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-</head>
+    <link rel="stylesheet" href="../CSS/style.css" />
+    <script type="module" src="../JS/script.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    ></script>
+  </head>
 
-
-<body>
+  <body>
     <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">AnimeRequester</a>
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">AnimeRequester</a>
 
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>SearchBy</option>
-                    <option value="1">Title</option>
-                    <option value="2">ID</option>
-                    <option value="3">Rank</option>
-                    <option value="4">Genre </option>
-                </select>
+          <select class="form-select" aria-label="Default select example">
+            <option selected>SearchBy</option>
+            <option value="1">Title</option>
+            <option value="2">ID</option>
+            <option value="3">Rank</option>
+            <option value="4">Genre</option>
+          </select>
 
-                <form action="">
-                    <fieldset disabled>
-                        <input type="text" id="disabledTextInput" class="form-control" placeholder="Research">
-                    </fieldset>
-                </form>
-                <a href="../index.html" class="nav-link active">Change APIKey</a>
-            </div>
-        </nav>
+          <form action="">
+            <fieldset disabled>
+              <input
+                type="text"
+                id="disabledTextInput"
+                class="form-control"
+                placeholder="Research"
+              />
+            </fieldset>
+          </form>
+          <a href="../index.html" class="nav-link active">Change APIKey</a>
+        </div>
+      </nav>
     </header>
 
-    <div class="container-fluid">
-
-    </div>
+    <div class="container-fluid" id="board"></div>
 
     <footer class="bottom">
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-            © 2026 Copyright:
-            <a class="text-body" href="https://github.com/TXC-VIKTOR/">TXC-VIKTOR</a>
-            <a class="text-body" href="https://github.com/GalaxyShadow99/">| GalaxyShadow99 |</a>
-            <a class="text-body" href="https://github.com/Naexys/">Naexys</a>
-        </div>
+      <div
+        class="text-center p-3"
+        style="background-color: rgba(0, 0, 0, 0.05)"
+      >
+        © 2026 Copyright:
+        <a class="text-body" href="https://github.com/TXC-VIKTOR/"
+          >TXC-VIKTOR</a
+        >
+        <a class="text-body" href="https://github.com/GalaxyShadow99/"
+          >| GalaxyShadow99 |</a
+        >
+        <a class="text-body" href="https://github.com/Naexys/">Naexys</a>
+      </div>
     </footer>
-
-</body>
-
-
+  </body>
 </html>

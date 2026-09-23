@@ -1,5 +1,5 @@
 // Gestion d'API et de fetch par Thomas
-const {  fetchByName, fetchByID, fetchByRank, fetchAvailableGenres, searchBySingleGenre, searchByMultipleGenres  } = require("./api.js");
-const {affCard} = require("./showcard.js");
+import {  fetchByName, fetchByID, fetchByRank, fetchAvailableGenres, searchBySingleGenre, searchByMultipleGenres  }from "./api.js";
+import {affCard} from "./showcard.js";
 
 affCard(await fetchByName("OverFlow"))  
