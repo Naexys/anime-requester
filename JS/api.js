@@ -18,7 +18,6 @@ async function request(endpoint) {
 			return null;
 		}
 		const result = await response.json();
-		data = result;
 		console.log(result);
 		return result;
 	} catch (error) {
