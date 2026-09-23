@@ -8,5 +8,5 @@ button_go.addEventListener('click', () => {
     let apiKey = inputAPI.value;
     sessionStorage.setItem("api_key", apiKey);
     // go to home.html
-    window.location.href = "home.html";
+    window.location.href = "/HTML/home.html";
 });
