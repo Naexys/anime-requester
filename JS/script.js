@@ -1,5 +1,5 @@
 // Gestion d'API et de fetch par Thomas
 import {  fetchByName, fetchByID, fetchByRank, fetchAvailableGenres, searchBySingleGenre, searchByMultipleGenres  }from "./api.js";
-import {affCard} from "./showcard.js";
+import {showCard} from "./showcard.js";
 
-affCard(await fetchByName("OverFlow"))  
+//showCard(await fetchByName("OverFlow")) -- ex de méthode a appelé quand l'utilisateur rentre recherche par nom et met "Overflow"  
