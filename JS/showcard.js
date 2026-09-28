@@ -18,5 +18,21 @@ function showCard(animes) {
 
 }
 
+function showCardByRank(animes) {
+    const board = document.getElementById("board");
 
-export { showCard };
+    const card = document.createElement("div");
+    card.classList.add("card");
+    board.appendChild(card);
+    const genreList = animes.genres ?? animes.genre ?? [];
+    const genres = Array.isArray(genreList) ? genreList.join(", ") : genreList;
+    card.innerHTML = `<h2>${animes.title}</h2>
+        <img src="${animes.image}" alt="${animes.title}">
+        <p>${animes.synopsis}</p>
+        <p>Genre : ${genres}</p>
+        <p>Rank : ${animes.ranking}</p>
+        <p>Episodes : ${animes.episodes}</p>
+        `
+}
+
+export { showCard, showCardByRank };

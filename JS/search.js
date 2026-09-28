@@ -1,4 +1,4 @@
-import { showCard } from "./showcard.js";
+import { showCard, showCardByRank } from "./showcard.js";
 import { fetchByName, fetchByID, fetchByRank, fetchAvailableGenres, searchBySingleGenre, searchByMultipleGenres } from "./api.js";
 
 const genre_list = sessionStorage.getItem('genre_list');
@@ -28,16 +28,17 @@ function updateSearch() {
                 class="form-control"
                 placeholder="Research"
               />
-              <input type="button" onclick="myFunction()" value="Submit">
+              
             </fieldset>
           </form>`;
 
     }
     else {
         search.innerHTML = `<form action="" id="searchForm">
-                <input type="text"
-                class="form-control" placeholder="Research" />
+                <input id="sBy" type="text" class="form-control" placeholder="Research" />
+                <input type="submit" value="Submit">
                 </form>`;
+        document.getElementById("searchForm").addEventListener("submit", handleSubmit);
     }
 }
 
@@ -47,6 +48,23 @@ async function searchGenre(event) {
     let g = event.currentTarget.value
     console.log(event.currentTarget.value);
     showCard(await searchBySingleGenre(g))
+}
+
+async function handleSubmit(event) {
+    const board = document.getElementById("board");
+    board.querySelectorAll(".card").forEach(card => card.remove());
+    event.preventDefault();
+    const sBy = document.getElementById("sBy").value;
+    if (select.value === "1"){
+        showCard(await fetchByName(sBy))
+    }
+    if (select.value === "2"){
+        showCard(await fetchByID(sBy))
+    }
+    if (select.value === "3"){
+        console.log(await fetchByRank(parseInt(sBy)))
+        showCardByRank(await fetchByRank(parseInt(sBy)))
+    }
 }
 
 select.addEventListener("change", updateSearch);
