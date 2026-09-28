@@ -1,12 +1,19 @@
 // Collection de fonctions liées à l'API, tout les fetch de donées sont regroupés ici ! 
 
-async function request(endpoint) {
-	let userApiKey = window.sessionStorage.getItem('api_key');
+async function request(endpoint, api_key_to_test) {
+	let apiKeyToUse;
+	if (api_key_to_test) {
+		apiKeyToUse = api_key_to_test;
+	}
+	else {
+		let userApiKey = window.sessionStorage.getItem('api_key');
+		apiKeyToUse = userApiKey;
+	}
 	const url = `https://anime-db.p.rapidapi.com${endpoint}`;
 	const options = {
 		method: 'GET',
 		headers: {
-			'x-rapidapi-key': userApiKey,
+			'x-rapidapi-key': apiKeyToUse,
 			'x-rapidapi-host': 'anime-db.p.rapidapi.com'
 		}
 	};
@@ -50,6 +57,11 @@ async function fetchAvailableGenres() {
 	return await request('/genre');
 }
 
+async function fetchAvailableGenresWithApiTestKey(api_key) {
+	return await request('/genre',api_key);
+}
+
+
 async function searchBySingleGenre(genreName, page = 1, size = 20) {
 	if (typeof genreName !== "string") {
 		throw new Error("Wrong parameter type, 'genreName' must be a String");
@@ -66,4 +78,4 @@ async function searchByMultipleGenres(genresNames, page = 1, size = 20) {
 }
 
 
-export { fetchByName, fetchByID, fetchByRank, fetchAvailableGenres, searchBySingleGenre, searchByMultipleGenres };
+export { fetchByName, fetchByID, fetchByRank, fetchAvailableGenres, searchBySingleGenre, searchByMultipleGenres,fetchAvailableGenresWithApiTestKey };
