@@ -36,7 +36,7 @@ function updateSearch() {
     else {
         search.innerHTML = `<form action="" id="searchForm">
                 <input id="sBy" type="text" class="form-control" placeholder="Research" />
-                <input type="submit" value="Submit">
+                <input type="submit" class="btn btn-primary" value="Submit">
                 </form>`;
         document.getElementById("searchForm").addEventListener("submit", handleSubmit);
     }
