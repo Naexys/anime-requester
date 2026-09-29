@@ -6,12 +6,12 @@ Accessible at https://naexys.github.io/anime-requester/
 
 ## Features
 
-- RapidAPI key registration and real-time validation
+- RapidAPI key registration and validation
 - Anime search by title keywords
 - Genre-based filtering (single and multiple genres)
 - Detailed anime cards displaying posters, synopses, rankings, and episode counts
-- Local session storage persistence using `sessionStorage` with JSON serialization
-- Modular JavaScript design using standard ES Modules
+- Local session storage persistence using `sessionStorage` with JSON serialization, to avoid to use too much API Calls
+- Modular JavaScript design using differents modules, one module per functionnality
 
 ## Local usage
 
@@ -20,6 +20,7 @@ Here is how to run the website on your machine:
 ```bash
   git clone https://github.com/Naexys/anime-requester.git Naexys-anime-requester
   cd Naexys-anime-requester
+  python3 -m http.server
 ```
 
 Then serve the project using a local web server (such as Live Server in VS Code, `npx serve`, or `python3 -m http.server`) and open `index.html`.

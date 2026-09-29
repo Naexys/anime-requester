@@ -47,7 +47,7 @@ button_go.addEventListener('click', async () => {
     console.table(availableGenresList);
     sessionStorage.setItem("api_key", apiKey);
     sessionStorage.setItem("genre_list", JSON.stringify(availableGenresList));
-    await sleep(5);
+    await sleep(2);
 
     if (validKey === true) {
         // envoie vers l'application
