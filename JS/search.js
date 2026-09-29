@@ -8,7 +8,7 @@ const li = JSON.parse(genre_list);
 
 function updateSearch() {
     if (select.value === "4") {
-        search.innerHTML = `<div class="btn-group" id="floatingSelect" aria-label="Floating label select example">
+        search.innerHTML = `<div class="btn-group" id="dropdown-genres" aria-label="Dropdown selection menu">
         <button class="btn border border-current text-reset dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" >Genres</button>
         </div>`;
 
@@ -17,9 +17,10 @@ function updateSearch() {
         let button_search = document.createElement("button");
         button_search.className = "btn border border-current text-reset";
         button_search.textContent = "Search";
+        button_search.addEventListener('click', searchGenre);
         search.appendChild(button_search);
 
-        const genreSelect = document.getElementById("floatingSelect");
+        const genreSelect = document.getElementById("dropdown-genres");
 
         let option_list = document.createElement("ul");
         option_list.className = "dropdown-menu";
@@ -40,7 +41,7 @@ function updateSearch() {
             option_check.id = element.id;
 
             option_label.appendChild(option_check);
-            option_label.appendChild(document.createTextNode(" "+element.id));
+            option_label.appendChild(document.createTextNode(" " + element.id));
 
 
             option.appendChild(option_label);
@@ -71,12 +72,42 @@ function updateSearch() {
     }
 }
 
-async function searchGenre(event) {
+async function searchGenre() {
     const board = document.getElementById("board");
     board.querySelectorAll(".card").forEach(card => card.remove());
-    let g = event.currentTarget.value
-    console.log(event.currentTarget.value);
-    showCard(await searchBySingleGenre(g))
+
+    // count checkboxes
+    const container = document.querySelector('#dropdown-genres');
+    const checkboxData = {};
+
+    container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        const identifier = checkbox.id;
+        if (identifier) {
+            checkboxData[identifier] = checkbox.checked;
+        }
+    }); 
+    
+    let nbChecked = 0;
+    let oneGenre;
+    let multipleGenres = [];
+    Object.entries(checkboxData).forEach(([property, value]) => {
+        if (value == true){
+            nbChecked++;
+            oneGenre = property;
+            multipleGenres.push(property);
+        }
+    });
+
+    // search one genre
+    if (nbChecked == 1){
+        showCard(await searchBySingleGenre(oneGenre));
+    }
+
+    // search multiple genres
+    else {
+        showCard(await searchByMultipleGenres(multipleGenres));
+    }
+
 }
 
 async function handleSubmit(event) {
