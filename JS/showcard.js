@@ -31,7 +31,7 @@ function showCard(animes) {
 
 }
 
-function showCardByRank(animes) {
+function showCardOneCard(animes) {
     const board = document.getElementById("board");
 
     const card = document.createElement("div");
@@ -48,4 +48,4 @@ function showCardByRank(animes) {
         `
 }
 
-export { showCard, showCardByRank };
+export { showCard, showCardOneCard };

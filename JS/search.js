@@ -1,4 +1,4 @@
-import { showCard, showCardByRank } from "./showcard.js";
+import { showCard, showCardOneCard } from "./showcard.js";
 import { fetchByName, fetchByID, fetchByRank, fetchAvailableGenres, searchBySingleGenre, searchByMultipleGenres } from "./api.js";
 
 const genre_list = sessionStorage.getItem('genre_list');
@@ -59,11 +59,11 @@ async function handleSubmit(event) {
         showCard(await fetchByName(sBy))
     }
     if (select.value === "2"){
-        showCardByRank(await fetchByID(sBy))
+        showCardOneCard(await fetchByID(sBy))
     }
     if (select.value === "3"){
         console.log(await fetchByRank(parseInt(sBy)))
-        showCardByRank(await fetchByRank(parseInt(sBy)))
+        showCardOneCard(await fetchByRank(parseInt(sBy)))
     }
 }
 
