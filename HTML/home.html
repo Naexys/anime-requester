@@ -18,8 +18,11 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="#">AnimeRequester</a>
 
+        <span class="navbar-text mb-0">Remaining API requests: <span id="remaining-requests">30</span></span>
+        <span class="navbar-text mb-0">Reset API : <span id="reset-timer">0</span></span>
+
         <select class="form-select" aria-label="Default select example">
-          <option selected value="0">SearchBy</option>
+          <option disabled selected value="0">Search by : </option>
           <option value="1">Title</option>
           <option value="2">ID</option>
           <option value="3">Rank</option>

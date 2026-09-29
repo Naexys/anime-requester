@@ -37,18 +37,26 @@ button_go.addEventListener('click', async () => {
         newP.classList.add("text-success");
         newP.textContent =
             "Votre clé RapidAPI est valide. Bonne utilisation de notre application.";
+
+        // store in sessionStorage only if valid key
+        let apiKey = inputAPI.value;
+        console.table(availableGenresList);
+        sessionStorage.setItem("api_key", apiKey);
+        sessionStorage.setItem("genre_list", JSON.stringify(availableGenresList));
+
     } else {
         newP.classList.add("text-danger");
         newP.textContent =
             "Votre clé RapidAPI n'est pas valide. Merci de la vérifier ou de vérifier que vous n'avez pas effectué plus de 30 requêtes dans la journée.";
+
+        // clear sessionStorage if invalid key, avoid storing old key and genres list
+        sessionStorage.removeItem("api_key");
+        sessionStorage.removeItem("genre_list");
+        sessionStorage.removeItem("remaining-requests");
+        sessionStorage.removeItem("reset-timer");
     }
 
     divAPI.parentElement.appendChild(newP);
-    // store in sessionStorage
-    let apiKey = inputAPI.value;
-    console.table(availableGenresList);
-    sessionStorage.setItem("api_key", apiKey);
-    sessionStorage.setItem("genre_list", JSON.stringify(availableGenresList));
     await sleep(2);
 
     if (validKey === true) {

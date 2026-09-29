@@ -13,7 +13,12 @@ function createSynopsis(synopsis) {
 
 function showCard(animes) {
     const board = document.getElementById("board");
+    if (!board) return;
 
+    if (!animes || !animes.data || !Array.isArray(animes.data) || animes.data.length === 0) {
+        board.innerHTML = `<div class="w-100 text-center my-4"><p class="text-muted fs-5">No results found</p></div>`;
+        return;
+    }
     animes.data.forEach(element => {
         const card = document.createElement("div");
         card.classList.add("card");
@@ -28,11 +33,16 @@ function showCard(animes) {
         <p>Episodes : ${element.episodes}</p>
         `
     });
-
 }
 
 function showCardOneCard(animes) {
     const board = document.getElementById("board");
+    if (!board) return;
+
+    if (!animes || (animes.data && (!Array.isArray(animes.data) || animes.data.length === 0))) {
+        board.innerHTML = `<div class="w-100 text-center my-4"><p class="text-muted fs-5">No results found</p></div>`;
+        return;
+    }
 
     const card = document.createElement("div");
     card.classList.add("card");

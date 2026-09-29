@@ -1,5 +1,66 @@
-// Collection de fonctions liées à l'API, tout les fetch de donées sont regroupés ici ! 
+function showRateLimitAlert() {
+	if (typeof document === "undefined") return;
 
+	// pas 2 div d'altert en même temps
+	const existingAlert = document.getElementById("api-rate-limit-alert");
+	if (existingAlert) {
+		existingAlert.remove();
+	}
+
+	const alertDiv = document.createElement("div");
+	alertDiv.id = "api-rate-limit-alert";
+	alertDiv.className = "alert alert-warning container my-3 text-center";
+	alertDiv.setAttribute("role", "alert");
+
+	alertDiv.innerHTML = `
+		<strong>Rate limit exceeded (Error 429) !</strong> 
+		Your RapidAPI key has exceeded the daily limit of 30 requests per day.
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	`;
+
+	const targetContainer = document.querySelector("main") || document.body;
+	if (targetContainer) {
+		targetContainer.prepend(alertDiv);
+	}
+}
+
+function updateRemainingRequests(remaining,resetTimer) {
+	sessionStorage.setItem("remaining-requests", remaining);
+	sessionStorage.setItem("reset-timer", resetTimer);
+}
+function getRemainingRequests() {
+	return sessionStorage.getItem("remaining-requests") || 30;
+}
+function getResetTimer() {
+	return sessionStorage.getItem("reset-timer") || 0;
+}
+
+// Stack overflow
+function toShortTime(secs) {
+    if (!secs || isNaN(secs)) return "";
+    let t = new Date();
+    t.setSeconds(Number(secs));
+    return t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function updateRemainingRequestsDisplay() {
+	const remainingRequests = getRemainingRequests();
+	const remainingRequestsElement = document.getElementById("remaining-requests");
+	if (remainingRequestsElement) {
+		remainingRequestsElement.textContent = remainingRequests;
+	}
+
+	const resetTimer = getResetTimer();
+	const resetTimerElement = document.getElementById("reset-timer");
+	if (resetTimerElement) {
+		resetTimerElement.textContent = toShortTime(resetTimer);
+	}
+}
+
+// when the page is loaded, update the display of remaining requests
+window.onload = function () { 
+    updateRemainingRequestsDisplay();
+}
 async function request(endpoint, api_key_to_test) {
 	let apiKeyToUse;
 	if (api_key_to_test) {
@@ -21,9 +82,20 @@ async function request(endpoint, api_key_to_test) {
 	try {
 		const response = await fetch(url, options);
 		if (!response.ok) {
-			console.error(`HTTP Error ${response.status}: ${response.statusText}`);
+			if (response.status === 429) {
+				showRateLimitAlert();
+			} else {
+				console.error(`HTTP Error ${response.status}: ${response.statusText}`);
+			}
 			return null;
 		}
+
+		let remaining = response.headers.get('x-ratelimit-requests-remaining');
+		let resetTimer = response.headers.get('x-ratelimit-rapid-free-plans-hard-limit-reset');
+
+		updateRemainingRequests(remaining,resetTimer);
+		updateRemainingRequestsDisplay();
+
 		const result = await response.json();
 		console.log(result);
 		return result;
@@ -58,7 +130,7 @@ async function fetchAvailableGenres() {
 }
 
 async function fetchAvailableGenresWithApiTestKey(api_key) {
-	return await request('/genre',api_key);
+	return await request('/genre', api_key);
 }
 
 
@@ -78,4 +150,4 @@ async function searchByMultipleGenres(genresNames, page = 1, size = 20) {
 }
 
 
-export { fetchByName, fetchByID, fetchByRank, fetchAvailableGenres, searchBySingleGenre, searchByMultipleGenres,fetchAvailableGenresWithApiTestKey };
+export { fetchByName, fetchByID, fetchByRank, fetchAvailableGenres, searchBySingleGenre, searchByMultipleGenres, fetchAvailableGenresWithApiTestKey };
