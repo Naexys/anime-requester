@@ -18,6 +18,11 @@ body>.container-fluid {
   justify-content: center;
   gap: 1.5rem;
   padding: 1.5rem;
+  padding-bottom: 25%;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 80px;
 }
 
 #board .card {
@@ -43,6 +48,6 @@ nav .form-select {
 
 form {
   display: flex;
-  margin-left: 10% ;
+  margin-left: 10%;
   gap: 1.5rem;
 }
