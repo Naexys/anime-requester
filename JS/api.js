@@ -1,30 +1,25 @@
 function showRateLimitAlert() {
 	if (typeof document === "undefined") return;
 
-	// pas 2 div d'altert en même temps
-	const existingAlert = document.getElementById("api-rate-limit-alert");
-	if (existingAlert) {
-		existingAlert.remove();
+	let targetContainer = document.getElementById("api-rate-limit-alert");
+
+	if (!targetContainer) {
+		targetContainer = document.createElement("div");
+		targetContainer.id = "api-rate-limit-alert";
+		const parent = document.querySelector("main") || document.body;
+		if (parent) parent.prepend(targetContainer);
 	}
 
-	const alertDiv = document.createElement("div");
-	alertDiv.id = "api-rate-limit-alert";
-	alertDiv.className = "alert alert-warning container my-3 text-center";
-	alertDiv.setAttribute("role", "alert");
-
-	alertDiv.innerHTML = `
+	targetContainer.className = "alert alert-warning alert-dismissible fade show container my-3 text-center";
+	targetContainer.setAttribute("role", "alert");
+	targetContainer.innerHTML = `
 		<strong>Rate limit exceeded (Error 429) !</strong> 
 		Your RapidAPI key has exceeded the daily limit of 30 requests per day.
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	`;
-
-	const targetContainer = document.querySelector("main") || document.body;
-	if (targetContainer) {
-		targetContainer.prepend(alertDiv);
-	}
 }
 
-function updateRemainingRequests(remaining,resetTimer) {
+function updateRemainingRequests(remaining, resetTimer) {
 	sessionStorage.setItem("remaining-requests", remaining);
 	sessionStorage.setItem("reset-timer", resetTimer);
 }
@@ -37,10 +32,10 @@ function getResetTimer() {
 
 // Stack overflow
 function toShortTime(secs) {
-    if (!secs || isNaN(secs)) return "";
-    let t = new Date();
-    t.setSeconds(Number(secs));
-    return t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+	if (!secs || isNaN(secs)) return "";
+	let t = new Date();
+	t.setSeconds(Number(secs));
+	return t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
 function updateRemainingRequestsDisplay() {
@@ -58,8 +53,8 @@ function updateRemainingRequestsDisplay() {
 }
 
 // when the page is loaded, update the display of remaining requests
-window.onload = function () { 
-    updateRemainingRequestsDisplay();
+window.onload = function () {
+	updateRemainingRequestsDisplay();
 }
 async function request(endpoint, api_key_to_test) {
 	let apiKeyToUse;
@@ -93,7 +88,7 @@ async function request(endpoint, api_key_to_test) {
 		let remaining = response.headers.get('x-ratelimit-requests-remaining');
 		let resetTimer = response.headers.get('x-ratelimit-rapid-free-plans-hard-limit-reset');
 
-		updateRemainingRequests(remaining,resetTimer);
+		updateRemainingRequests(remaining, resetTimer);
 		updateRemainingRequestsDisplay();
 
 		const result = await response.json();
