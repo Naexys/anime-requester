@@ -31,17 +31,19 @@ button_go.addEventListener('click', async () => {
 
     button_go.setAttribute("disabled", "enable");
     const newP = document.createElement('p');
+    newP.classList.add("mt-3");
 
     if (validKey === true) {
+        newP.classList.add("text-success");
         newP.textContent =
             "Votre clé RapidAPI est valide. Bonne utilisation de notre application.";
     } else {
+        newP.classList.add("text-danger");
         newP.textContent =
             "Votre clé RapidAPI n'est pas valide. Merci de la vérifier ou de vérifier que vous n'avez pas effectué plus de 30 requêtes dans la journée.";
     }
 
-    divAPI.appendChild(document.createElement('br'));
-    divAPI.appendChild(newP);
+    divAPI.parentElement.appendChild(newP);
     // store in sessionStorage
     let apiKey = inputAPI.value;
     console.table(availableGenresList);
