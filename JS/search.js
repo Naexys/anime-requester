@@ -59,7 +59,7 @@ async function handleSubmit(event) {
         showCard(await fetchByName(sBy))
     }
     if (select.value === "2"){
-        showCard(await fetchByID(sBy))
+        showCardByRank(await fetchByID(sBy))
     }
     if (select.value === "3"){
         console.log(await fetchByRank(parseInt(sBy)))
