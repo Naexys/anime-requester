@@ -14,7 +14,7 @@ body>.container-fluid {
 
 #board {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 360px));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 260px));
   justify-content: center;
   gap: 1.5rem;
   padding: 1.5rem;
@@ -26,7 +26,8 @@ body>.container-fluid {
 
 #board .card img {
   width: 100%;
-  height: clamp(260px, 28vw, 360px);
+  height: 358px;
+  width: 260px;
 }
 
 
@@ -38,4 +39,10 @@ nav .form-select {
 #floatingSelect {
   width: 100%;
   flex: 0 0 auto;
+}
+
+form {
+  display: flex;
+  margin-left: 10% ;
+  gap: 1.5rem;
 }
