@@ -61,7 +61,7 @@ button_go.addEventListener('click', async () => {
 
     if (validKey === true) {
         // envoie vers l'application
-        window.location.href = "/HTML/home.html";
+        window.location.href = "HTML/home.html";
     }
     else {
         //renvoie à la saisie de l'API
