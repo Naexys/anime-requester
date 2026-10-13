@@ -14,30 +14,29 @@
 
 <body>
   <header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">AnimeRequester</a>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary px-3">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
+        aria-controls="navbarToggler" aria-expanded="false" aria-label="Toogle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">AnimeRequester</a>
 
-        <span class="navbar-text mb-0">Remaining API requests: <span id="remaining-requests">30</span></span>
-        <span class="navbar-text mb-0">Reset API : <span id="reset-timer">0</span></span>
-
-        <select class="form-select" aria-label="Default select example">
+      <div class="collapse navbar-collapse" id="navbarToggler">
+        <span class="navbar-text mb-0 me-2">Remaining API requests :<span class="badge"
+            id="remaining-requests">30</span></span>
+        <span class="navbar-text mb-0 me-auto">Reset API :<span class="badge" id="reset-timer">0</span></span>
+        <select class="form-select me-2" aria-label="Default select example">
           <option disabled selected value="0">Search by : </option>
           <option value="1">Title</option>
           <option value="2">ID</option>
           <option value="3">Rank</option>
           <option value="4">Genre</option>
         </select>
-
-        <div id="search">
-          
-        </div>
-
-        <a href="../index.html" class="nav-link active">Change APIKey</a>
+        <div class="form-inline" id="search"></div>
       </div>
     </nav>
   </header>
-  
+
   <main>
     <div id="api-rate-limit-alert"></div>
     <div class="container-fluid" id="board"></div>
@@ -46,10 +45,12 @@
   <footer class="bottom fixed-bottom bg-body-tertiary">
     <div class="text-center p-3">
       © 2026 Copyright:
-      <a class="text-body" href="https://github.com/TXC-VIKTOR/">TXC-VIKTOR</a> | 
-      <a class="text-body" href="https://github.com/GalaxyShadow99/">GalaxyShadow99</a> | 
+      <a class="text-body" href="https://github.com/TXC-VIKTOR/">TXC-VIKTOR</a> |
+      <a class="text-body" href="https://github.com/GalaxyShadow99/">GalaxyShadow99</a> |
       <a class="text-body" href="https://github.com/Naexys/">Naexys</a>
       <button id="theme-change"></button>
+      <br>
+      <a class="btn border border-current" href="../index.html">Change APIKey</a>
     </div>
   </footer>
 </body>
