@@ -85,13 +85,13 @@ async function searchGenre() {
         if (identifier) {
             checkboxData[identifier] = checkbox.checked;
         }
-    }); 
-    
+    });
+
     let nbChecked = 0;
     let oneGenre;
     let multipleGenres = [];
     Object.entries(checkboxData).forEach(([property, value]) => {
-        if (value == true){
+        if (value == true) {
             nbChecked++;
             oneGenre = property;
             multipleGenres.push(property);
@@ -99,7 +99,7 @@ async function searchGenre() {
     });
 
     // search one genre
-    if (nbChecked == 1){
+    if (nbChecked == 1) {
         showCard(await searchBySingleGenre(oneGenre));
     }
 
