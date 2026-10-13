@@ -19,6 +19,7 @@ function showCard(animes) {
         board.innerHTML = `<div class="w-100 text-center my-4"><p class="text-muted fs-5">No results found</p></div>`;
         return;
     }
+    board.innerHTML=``;
     animes.data.forEach(element => {
         const card = document.createElement("div");
         card.classList.add("card");
@@ -43,6 +44,7 @@ function showCardOneCard(animes) {
         board.innerHTML = `<div class="w-100 text-center my-4"><p class="text-muted fs-5">No results found</p></div>`;
         return;
     }
+    board.innerHTML=``;
 
     const card = document.createElement("div");
     card.classList.add("card");

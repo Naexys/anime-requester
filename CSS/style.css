@@ -18,11 +18,10 @@ body>.container-fluid {
   justify-content: center;
   gap: 1.5rem;
   padding: 1.5rem;
-  padding-bottom: 25%;
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 80px;
+  padding-bottom: 100px;
 }
 
 #board .card {
@@ -49,4 +48,12 @@ nav .form-select {
 form {
   display: flex;
   gap: 1rem;
+}
+
+#dropdown-genres {
+    position: relative;
+}
+
+#dropdown-genres .dropdown-menu {
+    z-index: 2000;
 }

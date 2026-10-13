@@ -25,14 +25,18 @@
         <span class="navbar-text mb-0 me-2">Remaining API requests :<span class="badge"
             id="remaining-requests">30</span></span>
         <span class="navbar-text mb-0 me-auto">Reset API :<span class="badge" id="reset-timer">0</span></span>
-        <select class="form-select me-2" aria-label="Default select example">
-          <option disabled selected value="0">Search by : </option>
+        <label class="me-1" for="search-by">Search by : </label>
+        <select id="search-by" class="form-select me-2" aria-label="Default select example">
+          <option disabled selected value="0">Select ...</option>
           <option value="1">Title</option>
           <option value="2">ID</option>
           <option value="3">Rank</option>
           <option value="4">Genre</option>
         </select>
-        <div class="form-inline" id="search"></div>
+        <div class="me-5 d-flex flex-column align-items-start" id="search"></div>
+        <div class="navbar-nav">
+          <a class="btn border border-current" href="../index.html">Change APIKey</a>
+        </div>
       </div>
     </nav>
   </header>
@@ -49,8 +53,6 @@
       <a class="text-body" href="https://github.com/GalaxyShadow99/">GalaxyShadow99</a> |
       <a class="text-body" href="https://github.com/Naexys/">Naexys</a>
       <button id="theme-change"></button>
-      <br>
-      <a class="btn border border-current" href="../index.html">Change APIKey</a>
     </div>
   </footer>
 </body>
