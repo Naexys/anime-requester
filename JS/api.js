@@ -30,12 +30,12 @@ function getResetTimer() {
 	return sessionStorage.getItem("reset-timer") || 0;
 }
 
-// Stack overflow
 function toShortTime(secs) {
-	if (!secs || isNaN(secs)) return "";
-	let t = new Date();
-	t.setSeconds(Number(secs));
-	return t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+	const total = Number(secs);
+	if (!total || isNaN(total)) return "0";
+	const hours = Math.floor(total / 3600);
+	const minutes = Math.floor((total % 3600) / 60);
+	return `${hours}h ${minutes}m`;
 }
 
 function updateRemainingRequestsDisplay() {
@@ -86,7 +86,7 @@ async function request(endpoint, api_key_to_test) {
 		}
 
 		let remaining = response.headers.get('x-ratelimit-requests-remaining');
-		let resetTimer = response.headers.get('x-ratelimit-rapid-free-plans-hard-limit-reset');
+		let resetTimer = response.headers.get('x-ratelimit-requests-reset');
 
 		updateRemainingRequests(remaining, resetTimer);
 		updateRemainingRequestsDisplay();

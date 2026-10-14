@@ -9,10 +9,10 @@ const li = JSON.parse(genre_list);
 function updateSearch() {
     if (select.value === "4") {
         search.innerHTML = `<div class="btn-group" id="dropdown-genres" aria-label="Dropdown selection menu">
-        <button class="btn border border-current text-reset dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" >Genres</button>
+        <button class="btn border border-current text-reset dropdown-toggle me-2" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" >Genres</button>
         </div>`;
 
-        search.className = "d-flex gap-2";
+        search.className = "me-5 d-flex align-items-center justify-content-start";
 
         let button_search = document.createElement("button");
         button_search.className = "btn border border-current text-reset";
@@ -50,6 +50,7 @@ function updateSearch() {
 
     }
     else if (select.value === "0") {
+        search.className = "me-5 d-flex flex-column align-items-start";
         search.innerHTML = `<form action="">
             <fieldset disabled>
               <input
@@ -64,6 +65,7 @@ function updateSearch() {
 
     }
     else {
+        search.className = "me-5 d-flex flex-column align-items-start";
         search.innerHTML = `<form action="" id="searchForm">
                 <input id="sBy" type="text" class="form-control" placeholder="Research" />
                 <input type="submit" class="btn btn-primary" value="Submit">
@@ -85,13 +87,13 @@ async function searchGenre() {
         if (identifier) {
             checkboxData[identifier] = checkbox.checked;
         }
-    }); 
-    
+    });
+
     let nbChecked = 0;
     let oneGenre;
     let multipleGenres = [];
     Object.entries(checkboxData).forEach(([property, value]) => {
-        if (value == true){
+        if (value == true) {
             nbChecked++;
             oneGenre = property;
             multipleGenres.push(property);
@@ -99,7 +101,7 @@ async function searchGenre() {
     });
 
     // search one genre
-    if (nbChecked == 1){
+    if (nbChecked == 1) {
         showCard(await searchBySingleGenre(oneGenre));
     }
 
