@@ -11,15 +11,30 @@ function createSynopsis(synopsis) {
             aria-controls="${id}">Lire plus</button>`;
 }
 
+// Gère l'affichage du message d'accueil : visible si 0 résultat, masqué s'il y a des résultats
+function updateWelcomeMessage(hasResults) {
+    const welcomeMsg = document.getElementById("search-welcome-message");
+    if (!welcomeMsg) return;
+
+    if (hasResults) {
+        welcomeMsg.style.display = "none";
+    } else {
+        welcomeMsg.style.display = "flex";
+    }
+}
+
 function showCard(animes) {
     const board = document.getElementById("board");
     if (!board) return;
 
     if (!animes || !animes.data || !Array.isArray(animes.data) || animes.data.length === 0) {
+        updateWelcomeMessage(false);
         board.innerHTML = `<div class="w-100 text-center my-4"><p class="text-muted fs-5">No results found</p></div>`;
         return;
     }
-    board.innerHTML=``;
+
+    updateWelcomeMessage(true);
+    board.innerHTML = ``;
     animes.data.forEach(element => {
         const card = document.createElement("div");
         card.classList.add("card");
@@ -32,7 +47,7 @@ function showCard(animes) {
         <p>Genre : ${genres}</p>
         <p>Rank : ${element.ranking}</p>
         <p>Episodes : ${element.episodes}</p>
-        `
+        `;
     });
 }
 
@@ -41,10 +56,13 @@ function showCardOneCard(animes) {
     if (!board) return;
 
     if (!animes || (animes.data && (!Array.isArray(animes.data) || animes.data.length === 0))) {
+        updateWelcomeMessage(false);
         board.innerHTML = `<div class="w-100 text-center my-4"><p class="text-muted fs-5">No results found</p></div>`;
         return;
     }
-    board.innerHTML=``;
+
+    updateWelcomeMessage(true);
+    board.innerHTML = ``;
 
     const card = document.createElement("div");
     card.classList.add("card");
@@ -57,7 +75,7 @@ function showCardOneCard(animes) {
         <p>Genre : ${genres}</p>
         <p>Rank : ${animes.ranking}</p>
         <p>Episodes : ${animes.episodes}</p>
-        `
+        `;
 }
 
 export { showCard, showCardOneCard };
