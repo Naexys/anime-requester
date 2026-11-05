@@ -1,10 +1,13 @@
-import { showCard, showCardOneCard } from "./showcard.js";
-import { fetchByName, fetchByID, fetchByRank, fetchAvailableGenres, searchBySingleGenre, searchByMultipleGenres } from "./api.js";
+// Récupère la liste des genres stockée ou un tableau vide
+let genre_list = sessionStorage.getItem('genre_list');
+let li = genre_list ? JSON.parse(genre_list) : [];
 
-const genre_list = sessionStorage.getItem('genre_list');
+import { showCard, showCardOneCard } from "./showcard.js";
+import { fetchByName, fetchByID, fetchByRank, searchBySingleGenre, searchByMultipleGenres } from "./api.js";
+
 const select = document.querySelector(".form-select");
 const search = document.getElementById('search');
-const li = JSON.parse(genre_list);
+const searchWelcomeMessage = document.getElementById('search-welcome-message');
 
 function updateSearch() {
     if (select.value === "4") {
@@ -43,7 +46,6 @@ function updateSearch() {
             option_label.appendChild(option_check);
             option_label.appendChild(document.createTextNode(" " + element.id));
 
-
             option.appendChild(option_label);
             option_list.appendChild(option);
         });
@@ -59,7 +61,6 @@ function updateSearch() {
                 class="form-control"
                 placeholder="Research"
               />
-              
             </fieldset>
           </form>`;
 
@@ -104,28 +105,28 @@ async function searchGenre() {
     if (nbChecked == 1) {
         showCard(await searchBySingleGenre(oneGenre));
     }
-
     // search multiple genres
     else {
         showCard(await searchByMultipleGenres(multipleGenres));
     }
-
+    
 }
 
+
 async function handleSubmit(event) {
+    searchWelcomeMessage.style.display = "none";
     const board = document.getElementById("board");
     board.querySelectorAll(".card").forEach(card => card.remove());
     event.preventDefault();
     const sBy = document.getElementById("sBy").value;
     if (select.value === "1") {
-        showCard(await fetchByName(sBy))
+        showCard(await fetchByName(sBy));
     }
     if (select.value === "2") {
-        showCardOneCard(await fetchByID(sBy))
+        showCardOneCard(await fetchByID(sBy));
     }
     if (select.value === "3") {
-        console.log(await fetchByRank(parseInt(sBy)))
-        showCardOneCard(await fetchByRank(parseInt(sBy)))
+        showCardOneCard(await fetchByRank(parseInt(sBy)));
     }
 }
 

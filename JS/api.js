@@ -1,148 +1,99 @@
-function showRateLimitAlert() {
-	if (typeof document === "undefined") return;
+const BASE_URL = "https://kitsu.io/api/edge";
 
-	let targetContainer = document.getElementById("api-rate-limit-alert");
+// Transforme un anime Kitsu pour pas recoder tout frontend... format de l'ancienne API
+function formatAnime(item, included = []) {
+	if (!item) return null;
+	const attr = item.attributes || {};
 
-	if (!targetContainer) {
-		targetContainer = document.createElement("div");
-		targetContainer.id = "api-rate-limit-alert";
-		const parent = document.querySelector("main") || document.body;
-		if (parent) parent.prepend(targetContainer);
+	// Récupère les noms des genres
+	let genres = [];
+	if (item.relationships?.categories?.data && Array.isArray(included)) {
+		const ids = item.relationships.categories.data.map(c => c.id);
+		genres = included
+			.filter(inc => ids.includes(inc.id))
+			.map(inc => inc.attributes?.title || inc.attributes?.slug);
 	}
 
-	targetContainer.className = "alert alert-warning alert-dismissible fade show container my-3 text-center";
-	targetContainer.setAttribute("role", "alert");
-	targetContainer.innerHTML = `
-		<strong>Rate limit exceeded (Error 429) !</strong> 
-		Your RapidAPI key has exceeded the daily limit of 30 requests per day.
-		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-	`;
-}
-
-function updateRemainingRequests(remaining, resetTimer) {
-	sessionStorage.setItem("remaining-requests", remaining);
-	sessionStorage.setItem("reset-timer", resetTimer);
-}
-function getRemainingRequests() {
-	return sessionStorage.getItem("remaining-requests") || 30;
-}
-function getResetTimer() {
-	return sessionStorage.getItem("reset-timer") || 0;
-}
-
-function toShortTime(secs) {
-	const total = Number(secs);
-	if (!total || isNaN(total)) return "0";
-	const hours = Math.floor(total / 3600);
-	const minutes = Math.floor((total % 3600) / 60);
-	return `${hours}h ${minutes}m`;
-}
-
-function updateRemainingRequestsDisplay() {
-	const remainingRequests = getRemainingRequests();
-	const remainingRequestsElement = document.getElementById("remaining-requests");
-	if (remainingRequestsElement) {
-		remainingRequestsElement.textContent = remainingRequests;
-	}
-
-	const resetTimer = getResetTimer();
-	const resetTimerElement = document.getElementById("reset-timer");
-	if (resetTimerElement) {
-		resetTimerElement.textContent = toShortTime(resetTimer);
-	}
-}
-
-// when the page is loaded, update the display of remaining requests
-window.onload = function () {
-	updateRemainingRequestsDisplay();
-}
-async function request(endpoint, api_key_to_test) {
-	let apiKeyToUse;
-	if (api_key_to_test) {
-		apiKeyToUse = api_key_to_test;
-	}
-	else {
-		let userApiKey = window.sessionStorage.getItem('api_key');
-		apiKeyToUse = userApiKey;
-	}
-	const url = `https://anime-db.p.rapidapi.com${endpoint}`;
-	const options = {
-		method: 'GET',
-		headers: {
-			'x-rapidapi-key': apiKeyToUse,
-			'x-rapidapi-host': 'anime-db.p.rapidapi.com'
-		}
+	return {
+		_id: item.id,
+		title: attr.titles?.en || attr.canonicalTitle || attr.titles?.en_jp || "No title",
+		image: attr.posterImage?.medium || attr.posterImage?.original || "",
+		synopsis: attr.synopsis || "No description available.",
+		genres: genres,
+		ranking: attr.ratingRank ?? "N/A",
+		episodes: attr.episodeCount ?? "N/A"
 	};
+}
 
+// Fonction fetch de base
+async function request(endpoint) {
 	try {
-		const response = await fetch(url, options);
-		if (!response.ok) {
-			if (response.status === 429) {
-				showRateLimitAlert();
-			} else {
-				console.error(`HTTP Error ${response.status}: ${response.statusText}`);
-			}
-			return null;
-		}
-
-		let remaining = response.headers.get('x-ratelimit-requests-remaining');
-		let resetTimer = response.headers.get('x-ratelimit-requests-reset');
-
-		updateRemainingRequests(remaining, resetTimer);
-		updateRemainingRequestsDisplay();
-
-		const result = await response.json();
-		console.log(result);
-		return result;
+		const response = await fetch(`${BASE_URL}${endpoint}`);
+		if (!response.ok) return null;
+		return await response.json();
 	} catch (error) {
-		console.error(error);
+		console.error("Erreur API:", error);
+		return null;
 	}
 }
 
+// Recherche par nom
 async function fetchByName(name, page = 1, size = 20) {
-	if (typeof name !== "string") {
-		throw new Error("Wrong parameter type, 'name' must be a String");
-	}
-	return await request(`/anime?search=${name}&page=${page}&size=${size}`);
+	const offset = (page - 1) * size;
+	const res = await request(`/anime?filter[text]=${encodeURIComponent(name)}&page[limit]=${size}&page[offset]=${offset}&include=categories`);
+	if (!res || !res.data) return { data: [] };
+	return { data: res.data.map(item => formatAnime(item, res.included)) };
 }
 
+// Recherche par ID
 async function fetchByID(id) {
-	if (typeof id !== "number" && typeof id !== "string") {
-		throw new Error("Wrong parameter type, 'id' must be a String or Number");
-	}
-	return await request(`/anime/by-id/${id}`);
+	const res = await request(`/anime/${id}?include=categories`);
+	if (!res || !res.data) return null;
+	return formatAnime(res.data, res.included);
 }
 
+// Recherche par Rang exact
+// L'API ne permet pas de filtrer par ratingRank, mais trie avec sort=ratingRank
+// Le rang N est exactement à la position offset = N - 1
 async function fetchByRank(rank) {
-	if (typeof rank !== "number") {
-		throw new Error("Wrong parameter type, 'rank' must be a Number");
-	}
-	return await request(`/anime/by-ranking/${rank}`);
+	if (!rank || rank < 1) return null;
+	const offset = rank - 1;
+	const res = await request(`/anime?sort=ratingRank&page[limit]=1&page[offset]=${offset}&include=categories`);
+	if (!res || !res.data || res.data.length === 0) return null;
+	return formatAnime(res.data[0], res.included);
 }
 
+// Liste des genres
 async function fetchAvailableGenres() {
-	return await request('/genre');
+	const res = await request('/categories?page[limit]=40&sort=-totalMediaCount');
+	if (!res || !res.data) return [];
+	return res.data.map(cat => ({
+		id: cat.attributes?.title || cat.attributes?.slug || cat.id
+	}));
 }
 
-async function fetchAvailableGenresWithApiTestKey(api_key) {
-	return await request('/genre', api_key);
-}
-
-
+// Recherche par un genre
 async function searchBySingleGenre(genreName, page = 1, size = 20) {
-	if (typeof genreName !== "string") {
-		throw new Error("Wrong parameter type, 'genreName' must be a String");
-	}
-	return await request(`/anime?genres=${genreName}&page=${page}&size=${size}`);
+	const offset = (page - 1) * size;
+	const res = await request(`/anime?filter[categories]=${encodeURIComponent(genreName.toLowerCase())}&page[limit]=${size}&page[offset]=${offset}&include=categories`);
+	if (!res || !res.data) return { data: [] };
+	return { data: res.data.map(item => formatAnime(item, res.included)) };
 }
 
+// Recherche par plusieurs genres
 async function searchByMultipleGenres(genresNames, page = 1, size = 20) {
-	if (!Array.isArray(genresNames)) {
-		throw new Error("Wrong parameter type, 'genresNames' must be an Array");
-	}
-	const genresQuery = genresNames.join(',');
-	return await request(`/anime?genres=${genresQuery}&page=${page}&size=${size}`);
+	const offset = (page - 1) * size;
+	const query = genresNames.map(g => g.toLowerCase()).join(',');
+	const res = await request(`/anime?filter[categories]=${encodeURIComponent(query)}&page[limit]=${size}&page[offset]=${offset}&include=categories`);
+	if (!res || !res.data) return { data: [] };
+	return { data: res.data.map(item => formatAnime(item, res.included)) };
 }
 
-
-export { fetchByName, fetchByID, fetchByRank, fetchAvailableGenres, searchBySingleGenre, searchByMultipleGenres, fetchAvailableGenresWithApiTestKey };
+export { 
+	fetchByName, 
+	fetchByID, 
+	fetchByRank, 
+	fetchAvailableGenres, 
+	searchBySingleGenre, 
+	searchByMultipleGenres
+};

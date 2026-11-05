@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AnimeRequester</title>
-  <script src="../JS/redirect.js"></script>
   <link rel="stylesheet" href="../CSS/style.css">
   <script type="module" src="../JS/script.js"></script>
   <script defer src="../JS/theme.js"></script>
@@ -18,26 +17,22 @@
   <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary px-3">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
-        aria-controls="navbarToggler" aria-expanded="false" aria-label="Toogle navigation">
+        aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="#">AnimeRequester</a>
+      <a class="navbar-brand me-auto" href="/HTML/home.html">AnimeRequester</a>
 
       <div class="collapse navbar-collapse" id="navbarToggler">
-        <span class="navbar-text mb-0 me-2">Remaining API requests :<span class="badge"
-            id="remaining-requests">30</span></span>
-        <span class="navbar-text mb-0 me-auto">Reset API :<span class="badge" id="reset-timer">0</span></span>
-        <label class="me-1" for="search-by">Search by : </label>
-        <select id="search-by" class="form-select me-2" aria-label="Default select example">
-          <option disabled selected value="0">Select ...</option>
-          <option value="1">Title</option>
-          <option value="2">ID</option>
-          <option value="3">Rank</option>
-          <option value="4">Genre</option>
-        </select>
-        <div class="me-5 d-flex flex-column align-items-start" id="search"></div>
-        <div class="navbar-nav">
-          <a class="btn border border-current" href="../index.html">Change APIKey</a>
+        <div class="d-flex align-items-center ms-auto">
+          <label class="me-2 mb-0" for="search-by">Search by : </label>
+          <select id="search-by" class="form-select me-2" style="width: auto;" aria-label="Search filter">
+            <option disabled selected value="0">Select ...</option>
+            <option value="1">Title</option>
+            <option value="2">ID</option>
+            <option value="3">Rank</option>
+            <option value="4">Genre</option>
+          </select>
+          <div class="d-flex flex-column align-items-start" id="search"></div>
         </div>
       </div>
     </nav>
@@ -45,6 +40,8 @@
 
   <main>
     <div id="api-rate-limit-alert"></div>
+    <br><br><br>
+    <h3 id="search-welcome-message" class="text-center" style="width: 60%; min-height: 4rem; margin: auto; display: flex; align-items: center; justify-content: center;">Vous pouvez rechercher selon différents critères : Titre, ID sur Kitsu API, sa place dans le classement des animes les plus visionnés, et par multiples genres !</h2>
     <div class="container-fluid" id="board"></div>
   </main>
 

@@ -3,4 +3,8 @@ import { fetchByName, fetchByID, fetchByRank, fetchAvailableGenres, searchBySing
 import { showCard, showCardOneCard } from "./showcard.js";
 import "./search.js";
 
+if(sessionStorage.getItem("genre_list") == null){
+    window.location.href = "../index.html";
+}
+
 //showCard(await fetchByName("OverFlow")) -- ex de méthode a appelé quand l'utilisateur rentre recherche par nom et met "Overflow"  
