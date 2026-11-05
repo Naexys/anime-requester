@@ -73,7 +73,7 @@ async function fetchAvailableGenres() {
 }
 
 // Recherche par un genre
-async function searchBySingleGenre(genreName, page = 1, size = 30) {
+async function searchBySingleGenre(genreName, page = 1, size = 20) {
 	const offset = (page - 1) * size;
 	const res = await request(`/anime?filter[categories]=${encodeURIComponent(genreName.toLowerCase())}&page[limit]=${size}&page[offset]=${offset}&include=categories`);
 	if (!res || !res.data) return { data: [] };
@@ -81,7 +81,7 @@ async function searchBySingleGenre(genreName, page = 1, size = 30) {
 }
 
 // Recherche par plusieurs genres
-async function searchByMultipleGenres(genresNames, page = 1, size = 30) {
+async function searchByMultipleGenres(genresNames, page = 1, size = 20) {
 	const offset = (page - 1) * size;
 	const query = genresNames.map(g => g.toLowerCase()).join(',');
 	const res = await request(`/anime?filter[categories]=${encodeURIComponent(query)}&page[limit]=${size}&page[offset]=${offset}&include=categories`);
